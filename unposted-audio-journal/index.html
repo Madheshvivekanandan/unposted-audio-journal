@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unposted - Private Audio Journal</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>🎙️ Unposted</h1>
+        <p class="subtitle">Your Private Audio Journal</p>
+
+        <div class="privacy-note">
+            🔒 Private by default. Your audio stays on your device.
+        </div>
+
+        <div class="record-section">
+            <button id="recordBtn">Start Recording</button>
+            <div class="timer" id="timer">00:00</div>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Processing your journal entry...</p>
+        </div>
+
+        <div class="error" id="error"></div>
+
+        <div class="results" id="results">
+            <div class="section">
+                <div class="section-title">📝 Your Words</div>
+                <div class="transcript" id="transcript"></div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">💡 Key Reflections</div>
+                <ul class="insights" id="insights"></ul>
+            </div>
+
+            <div class="section">
+                <div class="section-title">😊 Emotional Tone</div>
+                <div class="emotion-viz">
+                    <div class="emotion-item">
+                        <div class="emotion-label">Positivity</div>
+                        <div class="emotion-bar">
+                            <div class="emotion-fill" id="valence-bar"></div>
+                        </div>
+                        <span id="valence-text"></span>
+                    </div>
+                    <div class="emotion-item">
+                        <div class="emotion-label">Energy</div>
+                        <div class="emotion-bar">
+                            <div class="emotion-fill" id="arousal-bar"></div>
+                        </div>
+                        <span id="arousal-text"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">🌱 Tomorrow's Prompt</div>
+                <div class="follow-up" id="followUp"></div>
+            </div>
+
+            <button class="reset-btn" id="resetBtn">Record Another Entry</button>
+        </div>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
