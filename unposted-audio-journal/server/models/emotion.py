@@ -3,7 +3,11 @@ import librosa
 import numpy as np
 
 print("Loading sentiment model...")
-sentiment_analyzer = pipeline("sentiment-analysis")
+sentiment_analyzer = pipeline(
+    "sentiment-analysis",
+    model="distilbert-base-uncased-finetuned-sst-2-english",
+    revision="af0f99b"  # Pin to specific version
+)
 
 def analyze_emotion(text):
     result = sentiment_analyzer(text[:512])[0]
