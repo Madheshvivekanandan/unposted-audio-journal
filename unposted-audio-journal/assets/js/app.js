@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let timerInterval;
     let isRecording = false;
     let isPaused = false;
+    let isCancelled = false;
 
     // Initialize calendar view
     initCalendar();
@@ -98,7 +99,10 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             mediaRecorder.addEventListener('stop', () => {
-                processAudio();
+                // Only process audio if not cancelled
+                if (!isCancelled) {
+                    processAudio();
+                }
                 // Stop all audio tracks after recording stops
                 stream.getTracks().forEach(track => track.stop());
             });
@@ -106,6 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
             mediaRecorder.start();
             isRecording = true;
             isPaused = false;
+            isCancelled = false;
             startTime = Date.now();
             pausedTime = 0;
 
@@ -143,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function stopRecording() {
         if (!isRecording || !mediaRecorder) return;
-
+        isCancelled = false;
         mediaRecorder.stop();
         clearInterval(timerInterval);
         isRecording = false;
@@ -153,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function cancelRecording() {
         if (!isRecording || !mediaRecorder) return;
-
+        isCancelled = true;
         mediaRecorder.stop();
         clearInterval(timerInterval);
         isRecording = false;
