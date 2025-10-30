@@ -1,73 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unposted - Private Audio Journal</title>
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unposted - Private Audio Journaling</title>
+
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 </head>
+
 <body>
-
+    <!-- Main container -->
     <div class="container">
-        <h1>🎙️ Unposted</h1>
-        <p class="subtitle">Your Private Audio Journal</p>
-
-        <div class="privacy-note">
-            🔒 Private by default. Your audio stays on your device.
-        </div>
-
-        <div class="record-section">
-            <button id="recordBtn">Start Recording</button>
-            <div class="timer" id="timer">00:00</div>
-        </div>
-
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p>Processing your journal entry...</p>
-        </div>
-
-        <div class="error" id="error"></div>
-
-        <div class="results" id="results">
-            <div class="section">
-                <div class="section-title">📝 Your Words</div>
-                <div class="transcript" id="transcript"></div>
+        <!-- Navigation -->
+        <nav>
+            <div class="logo">Unposted</div>
+            <div class="privacy-badge">
+                <i class="fas fa-lock"></i> Private by default
             </div>
+            <button id="settings-button" class="icon-button" title="Settings">
+                <i class="fas fa-cog"></i>
+            </button>
+        </nav>
 
-            <div class="section">
-                <div class="section-title">💡 Key Reflections</div>
-                <ul class="insights" id="insights"></ul>
-            </div>
+        <!-- Views -->
+        <div class="views">
+            <!-- Landing Page View -->
+            <div id="landing-view" class="view active">
+                <h1>Your Private Journaling Space</h1>
+                <p class="tagline">Reflect privately, grow mindfully</p>
 
-            <div class="section">
-                <div class="section-title">😊 Emotional Tone</div>
-                <div class="emotion-viz">
-                    <div class="emotion-item">
-                        <div class="emotion-label">Positivity</div>
-                        <div class="emotion-bar">
-                            <div class="emotion-fill" id="valence-bar"></div>
-                        </div>
-                        <span id="valence-text"></span>
+                <div class="starter-section">
+                    <h2>What would you like to reflect on today?</h2>
+                    <div class="starter-options">
+                        <button class="starter-option">Person</button>
+                        <button class="starter-option">Event</button>
+                        <button class="starter-option">Incident</button>
+                        <button class="starter-option">Life situation</button>
+                        <button class="starter-option">Other</button>
                     </div>
-                    <div class="emotion-item">
-                        <div class="emotion-label">Energy</div>
-                        <div class="emotion-bar">
-                            <div class="emotion-fill" id="arousal-bar"></div>
-                        </div>
-                        <span id="arousal-text"></span>
+                    <div style="margin-bottom: 1rem;">
+                        <input type="text" class="custom-starter" placeholder="Or type your own topic..." />
+                    </div>
+                    <button id="record-button" class="primary-button">
+                        <i class="fas fa-microphone"></i> Tap to Record
+                    </button>
+                    <div class="streak-counter">
+                        <span class="streak-number">5</span> <span class="streak-label">day streak</span>
                     </div>
                 </div>
             </div>
 
-            <div class="section">
-                <div class="section-title">🌱 Tomorrow's Prompt</div>
-                <div class="follow-up" id="followUp"></div>
+            <!-- Recording View -->
+            <div id="recording-view" class="view">
+                <div class="recording-status">
+                    <i class="fas fa-circle"></i> Recording...
+                </div>
+
+                <!-- Timer Display -->
+                <div class="timer-display">
+                    <div class="timer">00:00</div>
+                </div>
+
+                <!-- Waveform Display -->
+                <div class="waveform-container">
+                    <canvas id="waveform" width="400" height="120"></canvas>
+                </div>
+
+                <!-- Recording Controls -->
+                <div class="recording-controls">
+                    <button id="pause-button" class="control-button" title="Pause recording">
+                        <i class="fas fa-pause"></i>
+                    </button>
+                    <button id="stop-button" class="control-button primary" title="Stop recording">
+                        <i class="fas fa-stop"></i>
+                    </button>
+                    <button id="cancel-button" class="control-button" title="Cancel recording">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <!-- Privacy Notice -->
+                <div class="privacy-note">
+                    <i class="fas fa-lock"></i> Your audio stays on your device
+                </div>
             </div>
 
-            <button class="reset-btn" id="resetBtn">Record Another Entry</button>
+            <!-- Processing View -->
+            <div id="processing-view" class="view">
+                <div class="loading-spinner"></div>
+                <h2>Processing your reflection</h2>
+                <p>Analyzing locally on your device...</p>
+            </div>
+
+            <!-- Insights View -->
+            <div id="insights-view" class="view">
+                <!-- Transcript Section -->
+                <div class="transcript-section">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2>Your Reflection</h2>
+                        <button id="transcript-toggle" class="toggle-button" title="Toggle transcript">
+                            <i class="fas fa-chevron-up"></i>
+                        </button>
+                    </div>
+                    <!-- Transcript content - NOT collapsed by default -->
+                    <div id="transcript-content" class="transcript-content"></div>
+                </div>
+
+                <!-- Audio Player -->
+                <div class="audio-player-section">
+                    <div class="audio-player">
+                        <button id="play-button" title="Play audio">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <div class="progress-bar">
+                            <div class="progress"></div>
+                        </div>
+                        <div class="duration">00:00</div>
+                    </div>
+                </div>
+
+                <!-- Insights Section -->
+                <div class="insights-section">
+                    <h2>Key Insights</h2>
+                    <ul class="reflection-bullets"></ul>
+                </div>
+
+                <!-- Emotion Section -->
+                <div class="emotion-section">
+                    <h2>Emotional Tone</h2>
+                    <div class="emotion-quadrant">
+                        <div class="axis x-axis"></div>
+                        <div class="axis y-axis"></div>
+                        <div class="axis-label x-label">Energy</div>
+                        <div class="axis-label y-label">Valence</div>
+                        <div class="emotion-point"></div>
+                    </div>
+                    <div class="emotion-summary"></div>
+                </div>
+
+                <!-- Next Prompt Section -->
+                <div class="next-prompt-section">
+                    <h2>For Tomorrow</h2>
+                    <div class="next-prompt"></div>
+                </div>
+
+                <!-- New Reflection Button -->
+                <button id="new-reflection-button" class="primary-button">
+                    <i class="fas fa-plus"></i> New Reflection
+                </button>
+            </div>
+
+            <!-- Settings View -->
+            <div id="settings-view" class="view">
+                <h2>Settings</h2>
+
+                <!-- Privacy Settings -->
+                <div class="settings-section">
+                    <h3>Privacy</h3>
+                    <div class="setting-item">
+                        <span>Keep recordings on device only</span>
+                        <label class="switch">
+                            <input type="checkbox" checked />
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <span>Password protect insights</span>
+                        <label class="switch">
+                            <input type="checkbox" />
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+
+                    <!-- Export and Delete buttons with IDs -->
+                    <button id="export-data-button" class="secondary-button">
+                        <i class="fas fa-download"></i> Export all data
+                    </button>
+                    <button id="delete-data-button" class="danger-button">
+                        <i class="fas fa-trash"></i> Delete all data
+                    </button>
+                </div>
+
+                <!-- Journal History -->
+                <div class="settings-section">
+                    <h3>Journal History</h3>
+                    <div class="calendar-view"></div>
+                </div>
+
+                <!-- Back Button -->
+                <button id="close-settings-button" class="secondary-button">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+            </div>
         </div>
     </div>
 
-    <script src="assets/js/script.js"></script>
+    <script src="assets/js/app.js"></script>
 </body>
+
 </html>
